@@ -39,7 +39,7 @@ $taxis = new TaxisNet($username, $password);
 try {
     $response = $taxis->handle('094014201');
     
-    dd($response);
+    var_dump($response);
 } catch (VatException $exception) {
     echo "Σφάλμα: " . $exception->getMessage();
 }
@@ -105,7 +105,7 @@ $taxis = new VIES();
 try {
     $response = $taxis->handle('EL', '094014201');
     
-    dd($response);
+    var_dump($response);
 } catch (VatException $exception) {
     echo "Σφάλμα: " . $exception->getMessage();
 }
