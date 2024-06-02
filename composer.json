@@ -1,0 +1,49 @@
+{
+  "name": "firebed/vat-registry",
+  "type": "package",
+  "description": "Business Registry Information Search",
+  "keywords": [
+    "Αναζήτηση ΑΦΜ",
+    "ΑΦΜ",
+    "Μητώο ΑΦΜ",
+    "VAT Search",
+    "VAT Registry",
+    "Business Registry",
+    "Search VAT"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Okan Giritli",
+      "email": "okan.giritli@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-mbstring": "*",
+    "ext-soap": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Firebed\\VatRegistry\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
