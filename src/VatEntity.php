@@ -93,4 +93,14 @@ class VatEntity
      * @var array Δραστηριότητες Επιχείρησης
      */
     public array $firms = [];
+
+    public function isCompany(): bool
+    {
+        return $this->flag_description === "ΜΗ ΦΠ";
+    }
+    
+    public function isNaturalPerson(): bool
+    {
+        return $this->flag_description === "ΦΠ";
+    }
 }
