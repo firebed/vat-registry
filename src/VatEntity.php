@@ -98,9 +98,14 @@ class VatEntity
     {
         return $this->flag_description === "ΜΗ ΦΠ";
     }
-    
+
     public function isNaturalPerson(): bool
     {
         return $this->flag_description === "ΦΠ";
+    }
+
+    public function isActive(): bool
+    {
+        return $this->firm_flag_description === "ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ" || $this->stop_date !== null;
     }
 }

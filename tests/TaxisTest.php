@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Firebed\VatRegistry\TaxisNet;
-use Firebed\VatRegistry\VIES;
 use PHPUnit\Framework\TestCase;
 
 class TaxisTest extends TestCase
@@ -68,9 +67,12 @@ class TaxisTest extends TestCase
         $this->assertSame("1900-01-01", $entity->registration_date);
         $this->assertNull($entity->stop_date);
         $this->assertSame(true, $entity->normal_vat);
+        $this->assertSame(true, $entity->isCompany());
+        $this->assertSame(false, $entity->isNaturalPerson());
+        $this->assertSame(true, $entity->isActive());
 
         $this->assertCount(2, $entity->firms);
-        
+
         $this->assertSame("64191204", $entity->firms[0]['code']);
         $this->assertSame("ΥΠΗΡΕΣΙΕΣ ΤΡΑΠΕΖΩΝ", $entity->firms[0]['description']);
         $this->assertSame("1", $entity->firms[0]['kind']);

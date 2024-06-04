@@ -43,9 +43,9 @@ $password = 'your-password';
 $taxis = new TaxisNet($username, $password);
 
 try {
-    $response = $taxis->handle('094014201');
+    $entity = $taxis->handle('094014201');
     
-    var_dump($response);
+    print_r($entity);
 } catch (VatException $exception) {
     echo "Σφάλμα: " . $exception->getMessage();
 }
@@ -109,9 +109,9 @@ use Firebed\VatRegistry\VatException;
 $taxis = new VIES();
 
 try {
-    $response = $taxis->handle('EL', '094014201');
+    $entity = $taxis->handle('EL', '094014201');
     
-    var_dump($response);
+    print_r($entity);
 } catch (VatException $exception) {
     echo "Σφάλμα: " . $exception->getMessage();
 }
@@ -143,3 +143,20 @@ Firebed\VatRegistry\VatEntity {
 ```
 
 Σε περίπτωση που το ΑΦΜ δεν είναι έγκυρο, η υπηρεσία επιστρέφει `null`.
+
+## Helper methods
+
+### Έλεγχος Φυσικού Προσώπου / Εταιρείας
+
+```php
+$entity->isNaturalPerson();
+$entity->isCompany();
+```
+
+### Έλεγχος διατήρησης δραστηριότητας
+
+```php
+// Επιστρέφει true αν η επιχείρηση είναι ενεργή
+// Επιστρέφει false αν η επιχείρηση έχει διακοπεί
+$entity->isActive();
+```
