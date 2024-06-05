@@ -149,7 +149,7 @@ class TaxisNet
                 'code'             => $this->trim($firm->firm_act_code),
                 'description'      => $this->trim($firm->firm_act_descr),
                 'kind'             => $this->trim($firm->firm_act_kind),
-                'kind_description' => $this->trim($firm->firm_act_kind_descr),
+                'kindDescription' => $this->trim($firm->firm_act_kind_descr),
             ];
         }
 

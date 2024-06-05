@@ -56,34 +56,34 @@ try {
 ```php
 Firebed\VatRegistry\VatEntity {
   +vatNumber: "094014201"
-  +tax_authority_id: "1159"
-  +tax_authority_name: "ΦΑΕ ΑΘΗΝΩΝ"
-  +flag_description: "ΜΗ ΦΠ"
+  +taxAuthorityId: "1159"
+  +taxAuthorityName: "ΦΑΕ ΑΘΗΝΩΝ"
+  +flagDescription: "ΜΗ ΦΠ"
   +valid: true
-  +validity_description: "ΕΝΕΡΓΟΣ ΑΦΜ"
-  +firm_flag_description: "ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ"
+  +validityDescription: "ΕΝΕΡΓΟΣ ΑΦΜ"
+  +firmFlagDescription: "ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ"
   +legalName: "ΤΡΑΠΕΖΑ ΕΘΝΙΚΗ ΤΗΣ ΕΛΛΑΔΟΣ ΑΝΩΝΥΜΗ ΕΤΑΙΡΕΙΑ"
-  +commerce_title: ""
-  +legal_status_description: "ΑΕ"
+  +commerceTitle: ""
+  +legalStatusDescription: "ΑΕ"
   +street: "ΑΙΟΛΟΥ"
-  +street_number: "86"
+  +streetNumber: "86"
   +postcode: "10559"
   +city: "ΑΘΗΝΑ"
-  +registration_date: "1900-01-01"
-  +stop_date: ""
-  +normal_vat: true
+  +registrationDate: "1900-01-01"
+  +stopDate: ""
+  +normalVat: true
   +firms: array:2 [
     0 => array:4 [
       "code" => "64191204"
       "description" => "ΥΠΗΡΕΣΙΕΣ ΤΡΑΠΕΖΩΝ"
       "kind" => "1"
-      "kind_description" => "ΚΥΡΙΑ"
+      "kindDescription" => "ΚΥΡΙΑ"
     ]
     1 => array:4 [
       "code" => "66221001"
       "description" => "ΥΠΗΡΕΣΙΕΣ ΑΣΦΑΛΙΣΤΙΚΟΥ ΠΡΑΚΤΟΡΑ ΚΑΙ ΑΣΦΑΛΙΣΤΙΚΟΥ ΣΥΜΒΟΥΛΟΥ"
       "kind" => "2"
-      "kind_description" => "ΔΕΥΤΕΡΕΥΟΥΣΑ"
+      "kindDescription" => "ΔΕΥΤΕΡΕΥΟΥΣΑ"
     ]
   ]
 }
@@ -122,22 +122,22 @@ try {
 ```php
 Firebed\VatRegistry\VatEntity {
   +vatNumber: "094014201"
-  +tax_authority_id: null
-  +tax_authority_name: null
-  +flag_description: null
+  +taxAuthorityId: null
+  +taxAuthorityName: null
+  +flagDescription: null
   +valid: true
-  +validity_description: null
-  +firm_flag_description: null
+  +validityDescription: null
+  +firmflagDescription: null
   +legalName: "ΤΡΑΠΕΖΑ ΕΘΝΙΚΗ ΤΗΣ ΕΛΛΑΔΟΣ ΑΝΩΝΥΜΗ ΕΤΑΙΡΕΙΑ"
-  +commerce_title: null
-  +legal_status_description: null
+  +commerceTitle: null
+  +legalStatusDescription: null
   +street: "ΑΙΟΛΟΥ"
-  +street_number: "86"
+  +streetNumber: "86"
   +postcode: "10559"
   +city: "ΑΘΗΝΑ"
-  +registration_date: null
-  +stop_date: null
-  +normal_vat: null
+  +registrationDate: null
+  +stopDate: null
+  +normalVat: null
   +firms: []
 }
 ```
