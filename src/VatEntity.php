@@ -12,17 +12,17 @@ class VatEntity
     /**
      * @var ?string Κωδικός ΔΟΥ
      */
-    public ?string $tax_authority_id = null;
+    public ?string $taxAuthorityId = null;
 
     /**
      * @var ?string Περιγραφή ΔΟΥ
      */
-    public ?string $tax_authority_name = null;
+    public ?string $taxAuthorityName = null;
 
     /**
      * @var ?string Ένδειξη εάν πρόκειται για Φυσικό Πρόσωπο ή Μη Φυσικό Πρόσωπο
      */
-    public ?string $flag_description = null;
+    public ?string $flagDescription = null;
 
     /**
      * @var bool true εάν ο Α.Φ.Μ. είναι ενεργός, false για απενεργοποιημένος
@@ -32,12 +32,12 @@ class VatEntity
     /**
      * @var ?string Περιγραφή Ενεργός ή Ανενεργός
      */
-    public ?string $validity_description = null;
+    public ?string $validityDescription = null;
 
     /**
      * @var ?string Ένδειξη εάν πρόκειται για επιτηδευματία, μη επιτηδευματία ή πρώην επιτηδευματία
      */
-    public ?string $firm_flag_description = null;
+    public ?string $firmFlagDescription = null;
 
     /**
      * @var ?string Επωνυμία Επιχείρησης
@@ -47,12 +47,12 @@ class VatEntity
     /**
      * @var ?string Τίτλος Επιχείρησης
      */
-    public ?string $commerce_title = null;
+    public ?string $commerceTitle = null;
 
     /**
      * @var ?string ΠΕΡΙΓΡΑΦΗ ΜΟΡΦΗΣ ΜΗ Φ.Π.
      */
-    public ?string $legal_status_description = null;
+    public ?string $legalStatusDescription = null;
 
     /**
      * @var ?string Διεύθυνση Έδρας Επιχείρησης (Οδός)
@@ -62,7 +62,7 @@ class VatEntity
     /**
      * @var ?string Διεύθυνση Έδρας Επιχείρησης (Αριθμός οδού)
      */
-    public ?string $street_number = null;
+    public ?string $streetNumber = null;
 
     /**
      * @var ?string Διεύθυνση Έδρας Επιχείρησης (ΤΚ)
@@ -77,17 +77,17 @@ class VatEntity
     /**
      * @var ?string Ημερομηνία Έναρξης Επιχείρησης yyyy-mm-dd
      */
-    public ?string $registration_date = null;
+    public ?string $registrationDate = null;
 
     /**
      * @var ?string Ημερομηνία Διακοπής Επιχείρησης yyyy-mm-dd
      */
-    public ?string $stop_date = null;
+    public ?string $stopDate = null;
 
     /**
      * @var bool Ένδειξη Κανονικού Καθεστώτος Φ.Π.Α.
      */
-    public ?bool $normal_vat = null;
+    public ?bool $normalVat = null;
 
     /**
      * @var array Δραστηριότητες Επιχείρησης
@@ -96,16 +96,16 @@ class VatEntity
 
     public function isCompany(): bool
     {
-        return $this->flag_description === "ΜΗ ΦΠ";
+        return $this->flagDescription === "ΜΗ ΦΠ";
     }
 
     public function isNaturalPerson(): bool
     {
-        return $this->flag_description === "ΦΠ";
+        return $this->flagDescription === "ΦΠ";
     }
 
     public function isActive(): bool
     {
-        return $this->firm_flag_description === "ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ" || $this->stop_date !== null;
+        return $this->firmFlagDescription === "ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ" || $this->stopDate !== null;
     }
 }

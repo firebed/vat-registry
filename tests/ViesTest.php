@@ -16,7 +16,7 @@ class ViesTest extends TestCase
         $this->assertSame("094014201", $entity->vatNumber);
         $this->assertSame("ΤΡΑΠΕΖΑ ΕΘΝΙΚΗ ΤΗΣ ΕΛΛΑΔΟΣ ΑΝΩΝΥΜΗ ΕΤΑΙΡΕΙΑ", $entity->legalName);
         $this->assertSame("ΑΙΟΛΟΥ", $entity->street);
-        $this->assertSame("86", $entity->street_number);
+        $this->assertSame("86", $entity->streetNumber);
         $this->assertSame("10559", $entity->postcode);
         $this->assertSame("ΑΘΗΝΑ", $entity->city);
     }

@@ -61,7 +61,7 @@ class VIES
 
         $vat->postcode = $this->trim($this->afterLast($address, ' '));
         $vat->street = $this->trim($this->beforeLast($street, ' '));
-        $vat->street_number = $this->trim($this->afterLast($street, ' '));
+        $vat->streetNumber = $this->trim($this->afterLast($street, ' '));
         $vat->city = $this->trim($this->afterLast($response->address, ' - '));
         return $vat;
     }

@@ -125,22 +125,22 @@ class TaxisNet
 
         $vat = new VatEntity();
         $vat->vatNumber = $this->trim($rec->afm);
-        $vat->tax_authority_id = $this->trim($rec->doy);
-        $vat->tax_authority_name = $this->trim($rec->doy_descr);
-        $vat->flag_description = $this->trim($rec->i_ni_flag_descr);
+        $vat->taxAuthorityId = $this->trim($rec->doy);
+        $vat->taxAuthorityName = $this->trim($rec->doy_descr);
+        $vat->flagDescription = $this->trim($rec->i_ni_flag_descr);
         $vat->valid = $this->trim($rec->deactivation_flag) === "1";
-        $vat->validity_description = $this->trim($rec->deactivation_flag_descr);
-        $vat->firm_flag_description = $this->trim($rec->firm_flag_descr);
+        $vat->validityDescription = $this->trim($rec->deactivation_flag_descr);
+        $vat->firmFlagDescription = $this->trim($rec->firm_flag_descr);
         $vat->legalName = preg_replace('!\s+!', ' ', $this->trim($rec->onomasia));
-        $vat->commerce_title = $this->trim($rec->commer_title);
-        $vat->legal_status_description = $this->trim($rec->legal_status_descr);
+        $vat->commerceTitle = $this->trim($rec->commer_title);
+        $vat->legalStatusDescription = $this->trim($rec->legal_status_descr);
         $vat->street = $this->trim($rec->postal_address);
-        $vat->street_number = $this->trim($rec->postal_address_no);
+        $vat->streetNumber = $this->trim($rec->postal_address_no);
         $vat->postcode = $this->trim($rec->postal_zip_code);
         $vat->city = $this->trim($rec->postal_area_description);
-        $vat->registration_date = $this->trim($rec->regist_date);
-        $vat->stop_date = $this->trim($rec->stop_date);
-        $vat->normal_vat = $this->trim($rec->normal_vat_system_flag) === 'Y';
+        $vat->registrationDate = $this->trim($rec->regist_date);
+        $vat->stopDate = $this->trim($rec->stop_date);
+        $vat->normalVat = $this->trim($rec->normal_vat_system_flag) === 'Y';
 
         $firms = $this->wrapArray($data->firm_act_tab->item);
 
