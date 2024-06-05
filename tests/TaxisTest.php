@@ -76,12 +76,12 @@ class TaxisTest extends TestCase
         $this->assertSame("64191204", $entity->firms[0]['code']);
         $this->assertSame("ΥΠΗΡΕΣΙΕΣ ΤΡΑΠΕΖΩΝ", $entity->firms[0]['description']);
         $this->assertSame("1", $entity->firms[0]['kind']);
-        $this->assertSame("ΚΥΡΙΑ", $entity->firms[0]['kind_description']);
+        $this->assertSame("ΚΥΡΙΑ", $entity->firms[0]['kindDescription']);
 
         $this->assertSame("66221001", $entity->firms[1]['code']);
         $this->assertSame("ΥΠΗΡΕΣΙΕΣ ΑΣΦΑΛΙΣΤΙΚΟΥ ΠΡΑΚΤΟΡΑ ΚΑΙ ΑΣΦΑΛΙΣΤΙΚΟΥ ΣΥΜΒΟΥΛΟΥ", $entity->firms[1]['description']);
         $this->assertSame("2", $entity->firms[1]['kind']);
-        $this->assertSame("ΔΕΥΤΕΡΕΥΟΥΣΑ", $entity->firms[1]['kind_description']);
+        $this->assertSame("ΔΕΥΤΕΡΕΥΟΥΣΑ", $entity->firms[1]['kindDescription']);
     }
 
     public function test_invalid_vat_number()
