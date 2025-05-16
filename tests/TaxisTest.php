@@ -53,8 +53,8 @@ class TaxisTest extends TestCase
 
         $this->assertTrue($entity->valid);
         $this->assertSame("094014201", $entity->vatNumber);
-        $this->assertSame("1159", $entity->taxAuthorityId);
-        $this->assertSame("ΦΑΕ ΑΘΗΝΩΝ", $entity->taxAuthorityName);
+        $this->assertSame("1190", $entity->taxAuthorityId);
+        $this->assertSame("ΚΕΦΟΔΕ ΑΤΤΙΚΗΣ", $entity->taxAuthorityName);
         $this->assertSame("ΜΗ ΦΠ", $entity->flagDescription);
         $this->assertSame("ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ", $entity->firmFlagDescription);
         $this->assertSame("ΕΝΕΡΓΟΣ ΑΦΜ", $entity->validityDescription);

@@ -92,6 +92,26 @@ Firebed\VatRegistry\VatEntity {
 Σε περίπτωση που το ΑΦΜ δεν είναι έγκυρο επιστρέφεται τιμή `null`. Αν υπήρξε κάποιο άλλο πρόβλημα το `VatException` θα
 περιέχει το σχετικό μήνυμα σφάλματος.
 
+## Μέσω της Υπηρεσίας ΓΕ.ΜΗ. (Business Registry)
+
+Η υπηρεσία αυτή επιτρέπει την αναζήτηση όλων των ΑΦΜ που είναι καταχωρημένα
+στο Γενικό Εμπορικό Μητρώο (ΓΕ.ΜΗ.). Δεν απαιτείται εγγραφή στην υπηρεσία.
+
+[https://businessregistry.gr/](https://businessregistry.gr/)
+
+> [!CAUTION]
+> This is an initial draft, and the API may change in the future.
+
+```php
+
+use Firebed\VatRegistry\BusinessPortal;
+
+$portal = new BusinessPortal();
+$response = $portal->handle('094014201');
+
+var_dump($response);
+```
+
 ## Μέσω της Υπηρεσίας Vat Information Exchange System (VIES)
 
 Με τη χρήση της Υπηρεσία VIES μπορείτε να επαληθεύσετε την εγκυρότητα του ΑΦΜ,

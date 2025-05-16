@@ -21,7 +21,8 @@
   "require": {
     "php": "^8.0",
     "ext-mbstring": "*",
-    "ext-soap": "*"
+    "ext-soap": "*",
+    "ext-curl": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^10.0"
