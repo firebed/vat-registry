@@ -142,15 +142,19 @@ class TaxisNet
         $vat->stopDate = $this->trim($rec->stop_date);
         $vat->normalVat = $this->trim($rec->normal_vat_system_flag) === 'Y';
 
-        $firms = $this->wrapArray($data->firm_act_tab->item);
+        if (isset($data->firm_act_tab->item)) {
+            $firms = $this->wrapArray($data->firm_act_tab->item);
 
-        foreach ($firms as $firm) {
-            $vat->firms[] = [
-                'code'             => $this->trim($firm->firm_act_code),
-                'description'      => $this->trim($firm->firm_act_descr),
-                'kind'             => $this->trim($firm->firm_act_kind),
-                'kindDescription' => $this->trim($firm->firm_act_kind_descr),
-            ];
+            foreach ($firms as $firm) {
+                $vat->firms[] = [
+                    'code'             => $this->trim($firm->firm_act_code),
+                    'description'      => $this->trim($firm->firm_act_descr),
+                    'kind'             => $this->trim($firm->firm_act_kind),
+                    'kindDescription' => $this->trim($firm->firm_act_kind_descr),
+                ];
+            }
+        } else {
+            $vat->firms = [];
         }
 
         return $vat;
