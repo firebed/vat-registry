@@ -106,6 +106,6 @@ class VatEntity
 
     public function isActive(): bool
     {
-        return $this->firmFlagDescription === "ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ" || $this->stopDate !== null;
+        return $this->firmFlagDescription === "ΕΠΙΤΗΔΕΥΜΑΤΙΑΣ" || $this->stopDate === null;
     }
 }
