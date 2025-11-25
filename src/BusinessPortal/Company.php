@@ -4,118 +4,118 @@ namespace Firebed\VatRegistry\BusinessPortal;
 
 class Company
 {
-    public function __construct(private array $data)
+    public function __construct(private array $properties)
     {
     }
 
     public function getLegalType(): ?Enum
     {
-        return !empty($this->data['legalType']) ? new Enum($this->data['legalType']) : null;
+        return !empty($this->properties['legalType']) ? new Enum($this->properties['legalType']) : null;
     }
 
     public function getZipCode(): ?string
     {
-        return $this->data['zipCode'] ?? null;
+        return $this->properties['zipCode'] ?? null;
     }
 
     public function getMunicipality(): ?Enum
     {
-        return !empty($this->data['municipality']) ? new Enum($this->data['municipality']) : null;
+        return !empty($this->properties['municipality']) ? new Enum($this->properties['municipality']) : null;
     }
 
     public function getRegistrationNumber(): ?string
     {
-        return $this->data['arGemi'] ?? null;
+        return $this->properties['arGemi'] ?? null;
     }
 
     public function getCity(): ?string
     {
-        return $this->data['city'] ?? null;
+        return $this->properties['city'] ?? null;
     }
 
     public function getStreetNumber(): ?string
     {
-        return $this->data['streetNumber'] ?? null;
+        return $this->properties['streetNumber'] ?? null;
     }
 
     public function getTin(): ?string
     {
-        return $this->data['afm'] ?? null;
+        return $this->properties['afm'] ?? null;
     }
 
     public function getPhone(): ?string
     {
-        return $this->data['phone'] ?? null;
+        return $this->properties['phone'] ?? null;
     }
 
     public function getFax(): ?string
     {
-        return $this->data['fax'] ?? null;
+        return $this->properties['fax'] ?? null;
     }
 
     public function getUrl(): ?string
     {
-        return $this->data['url'] ?? null;
+        return $this->properties['url'] ?? null;
     }
 
     public function getEmail(): ?string
     {
-        return $this->data['email'] ?? null;
+        return $this->properties['email'] ?? null;
     }
 
     public function isBranch(): bool
     {
-        return filter_var($this->data['isBranch'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        return filter_var($this->properties['isBranch'] ?? false, FILTER_VALIDATE_BOOLEAN);
     }
 
     public function getObjective(): ?string
     {
-        return $this->data['objective'] ?? null;
+        return $this->properties['objective'] ?? null;
     }
 
     public function getCompanyNamesEn(): array
     {
-        return $this->data['coNamesEn'] ?? [];
+        return $this->properties['coNamesEn'] ?? [];
     }
 
     public function isAutoRegistered(): bool
     {
-        return filter_var($this->data['autoRegistered'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        return filter_var($this->properties['autoRegistered'] ?? false, FILTER_VALIDATE_BOOLEAN);
     }
 
     public function getPostalCode(): ?string
     {
-        return $this->data['poBox'] ?? null;
+        return $this->properties['poBox'] ?? null;
     }
 
     public function getCompanyNameEl(): ?string
     {
-        return $this->data['coNameEl'] ?? null;
+        return $this->properties['coNameEl'] ?? null;
     }
 
     public function getLastStatusChange(): ?string
     {
-        return $this->data['lastStatusChange'] ?? null;
+        return $this->properties['lastStatusChange'] ?? null;
     }
 
     public function getStatus(): ?Enum
     {
-        return !empty($this->data['status']) ? new Enum($this->data['status']) : null;
+        return !empty($this->properties['status']) ? new Enum($this->properties['status']) : null;
     }
 
     public function getTaxOffice(): ?Enum
     {
-        return !empty($this->data['prefecture']) ? new Enum($this->data['prefecture']) : null;
+        return !empty($this->properties['prefecture']) ? new Enum($this->properties['prefecture']) : null;
     }
 
     public function getStreet(): ?string
     {
-        return $this->data['street'] ?? null;
+        return $this->properties['street'] ?? null;
     }
 
     public function getCommercialRegistryOffice(): ?Enum
     {
-        return !empty($this->data['gemiOffice']) ? new Enum($this->data['gemiOffice']) : null;
+        return !empty($this->properties['gemiOffice']) ? new Enum($this->properties['gemiOffice']) : null;
     }
 
     /**
@@ -124,8 +124,8 @@ class Company
     public function getActivities(): array
     {
         $activities = [];
-        if (!empty($this->data['activities']) && is_array($this->data['activities'])) {
-            foreach ($this->data['activities'] as $activityData) {
+        if (!empty($this->properties['activities']) && is_array($this->properties['activities'])) {
+            foreach ($this->properties['activities'] as $activityData) {
                 $activities[] = new Activity($activityData);
             }
         }
@@ -134,17 +134,17 @@ class Company
 
     public function getCommerceTitlesEl(): array
     {
-        return $this->data['coTitlesEl'] ?? [];
+        return $this->properties['coTitlesEl'] ?? [];
     }
 
     public function getCommerceTitlesEn(): array
     {
-        return $this->data['coTitlesEn'] ?? [];
+        return $this->properties['coTitlesEn'] ?? [];
     }
 
     public function getIncorporationDate(): ?string
     {
-        return $this->data['incorporationDate'] ?? null;
+        return $this->properties['incorporationDate'] ?? null;
     }
 
     /**
@@ -153,8 +153,8 @@ class Company
     public function getRepresentatives(): array
     {
         $representatives = [];
-        if (!empty($this->data['persons']) && is_array($this->data['persons'])) {
-            foreach ($this->data['persons'] as $personData) {
+        if (!empty($this->properties['persons']) && is_array($this->properties['persons'])) {
+            foreach ($this->properties['persons'] as $personData) {
                 $representatives[] = new Representative($personData);
             }
         }
@@ -167,8 +167,8 @@ class Company
     public function getCapital(): array
     {
         $capitals = [];
-        if (!empty($this->data['capital']) && is_array($this->data['capital'])) {
-            foreach ($this->data['capital'] as $capitalData) {
+        if (!empty($this->properties['capital']) && is_array($this->properties['capital'])) {
+            foreach ($this->properties['capital'] as $capitalData) {
                 $capitals[] = new Capital($capitalData);
             }
         }
@@ -181,8 +181,8 @@ class Company
     public function getStocks(): array
     {
         $stocks = [];
-        if (!empty($this->data['stocks']) && is_array($this->data['stocks'])) {
-            foreach ($this->data['stocks'] as $stockData) {
+        if (!empty($this->properties['stocks']) && is_array($this->properties['stocks'])) {
+            foreach ($this->properties['stocks'] as $stockData) {
                 $stocks[] = new Stock($stockData);
             }
         }
@@ -191,6 +191,11 @@ class Company
 
     public function getBranch(): array
     {
-        return $this->data['branch'] ?? [];
+        return $this->properties['branch'] ?? [];
+    }
+
+    public function toArray(): array
+    {
+        return $this->properties;
     }
 }
