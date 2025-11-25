@@ -7,48 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 class TaxisTest extends TestCase
 {
-    private function credentials(): array
-    {
-        $variables = [];
-
-        $filePath = __DIR__.'/../.env';
-        if (!file_exists($filePath)) {
-            echo "File not found: $filePath".PHP_EOL;
-            return $variables;
-        }
-
-        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-        foreach ($lines as $line) {
-            // Skip comments
-            if (str_starts_with(trim($line), '#')) {
-                continue;
-            }
-
-            // Parse the line into a key and value
-            list($name, $value) = explode('=', $line, 2);
-
-            // Trim whitespace
-            $name = trim($name ?? '');
-            $value = trim($value ?? '');
-
-            // Remove surrounding quotes from the value if present
-            if ((str_starts_with($value, '"') && str_ends_with($value, '"')) ||
-                (str_starts_with($value, "'") && str_ends_with($value, "'"))) {
-                $value = substr($value, 1, -1);
-            }
-
-            $variables[$name] = $value;
-        }
-
-        return [$variables['GGPS_USERNAME'], $variables['GGPS_PASSWORD']];
-    }
-
     public function test_valid_vat_number()
     {
-        [$username, $password] = $this->credentials();
+        $env = new Env();
 
-        $registry = new TaxisNet($username, $password);
+        $registry = new TaxisNet($env->get('GGPS_USERNAME'), $env->get('GGPS_PASSWORD'));
         $entity = $registry->handle('094014201');
 
         $this->assertTrue($entity->valid);
@@ -86,9 +49,9 @@ class TaxisTest extends TestCase
 
     public function test_invalid_vat_number()
     {
-        [$username, $password] = $this->credentials();
+        $env = new Env();
 
-        $registry = new TaxisNet($username, $password);
+        $registry = new TaxisNet($env->get('GGPS_USERNAME'), $env->get('GGPS_PASSWORD'));
         $entity = $registry->handle('000000000');
 
         $this->assertNull($entity);

@@ -1,16 +1,12 @@
-# Αναζήτηση Βασικών Στοιχείων Μητρώου Επιχειρήσεων
+# Search for Basic Business Registry Information
 
-Με τη χρήση αυτής της υπηρεσίας, τα νομικά πρόσωπα, οι νομικές οντότητες,
-και τα φυσικά πρόσωπα με εισόδημα από επιχειρηματική δραστηριότητα μπορούν
-να αναζητήσουν βασικές πληροφορίες, προκειμένου να διακριβώσουν τη φορολογική
-ή την επαγγελματική υπόσταση άλλων νομικών προσώπων ή νομικών οντοτήτων ή
-φορολογουμένων/φυσικών προσώπων που ασκούν επιχειρηματική δραστηριότητα.
+Using this service, legal entities, legal persons, and natural persons with income from business activity can search for basic information in order to verify the tax or professional status of other legal entities, legal persons, or taxpayers/natural persons conducting business activity.
 
-Το σύστημα παρέχει 3 τρόπους αναζήτησης βασικών στοιχείων μητρώου επιχειρήσεων:
+The system provides 3 ways to search for basic business registry information:
 
-- Μέσω της Υπηρεσίας Αναζήτησης Βασικών Στοιχείων Μητρώου Επιχειρήσεων
-- Μέσω της Υπηρεσίας ΓΕ.ΜΗ. (Business Registry)
-- Μέσω της Υπηρεσίας Vat Information Exchange System (VIES)
+- Through the Basic Business Registry Information Search Service
+- Through the Business Registry Service (ΓΕ.ΜΗ.)
+- Through the VAT Information Exchange System (VIES) Service
 
 ## Installation
 
@@ -18,21 +14,18 @@
 composer require firebed/vat-registry
 ```
 
-## Μέσω της Υπηρεσίας Αναζήτησης Βασικών Στοιχείων Μητρώου Επιχειρήσεων
+## Through the Basic Business Registry Information Search Service
 
-Η υπηρεσία αυτή επιτρέπει την αναζήτηση όλων των Ελληνικών ΑΦΜ. Για την αναζήτηση
-θα χρειαστείτε ένα `username` και ένα `password`.
+This service allows searching all Greek VAT numbers. For the search, you will need a `username` and a `password`.
 
-Διαδικασία εγγραφής:
+Registration process:
 
-- Εγγραφή στην [υπηρεσία](https://www1.aade.gr/webtax/wspublicreg/faces/pages/wspublicreg/menu.xhtml) κάνοντας χρήση των κωδικών TAXISnet.
-- Απόκτηση ειδικών κωδικών πρόσβασης μέσω της εφαρμογής [Διαχείριση Ειδικών Κωδικών](https://www1.aade.gr/sgsisapps/tokenservices/protected/displayConsole.htm).
+- Register with the [service](https://www1.aade.gr/webtax/wspublicreg/faces/pages/wspublicreg/menu.xhtml) using TAXISnet credentials.
+- Obtain special access credentials through the [Special Credentials Management](https://www1.aade.gr/sgsisapps/tokenservices/protected/displayConsole.htm) application.
 
-Για περισσότερες λεπτομέρειες και για την εγγραφή επισκεφτείτε
-την [Επίσημη Σελίδα της ΑΑΔΕ](https://www.aade.gr/anazitisi-basikon-stoiheion-mitrooy-epiheiriseon).
+For more details and registration, visit the [Official AADE Page](https://www.aade.gr/anazitisi-basikon-stoiheion-mitrooy-epiheiriseon).
 
-Μετά την εγγραφή, θα έχετε τα `username` και `password` που θα χρειαστείτε για την
-χρήση της υπηρεσίας.
+After registration, you will have the `username` and `password` needed to use the service.
 
 ```php
 use Firebed\VatRegistry\TaxisNet;
@@ -52,7 +45,7 @@ try {
 }
 ```
 
-Το αποτέλεσμα της παραπάνω κλήσης:
+The result of the above call:
 
 ```php
 Firebed\VatRegistry\VatEntity {
@@ -90,38 +83,56 @@ Firebed\VatRegistry\VatEntity {
 }
 ```
 
-Σε περίπτωση που το ΑΦΜ δεν είναι έγκυρο επιστρέφεται τιμή `null`. Αν υπήρξε κάποιο άλλο πρόβλημα το `VatException` θα
-περιέχει το σχετικό μήνυμα σφάλματος.
+### Check Natural Person / Company
 
-## Μέσω της Υπηρεσίας ΓΕ.ΜΗ. (Business Registry)
+```php
+$entity->isNaturalPerson();
+$entity->isCompany();
+```
 
-Η υπηρεσία αυτή επιτρέπει την αναζήτηση όλων των ΑΦΜ που είναι καταχωρημένα
-στο Γενικό Εμπορικό Μητρώο (ΓΕ.ΜΗ.). Δεν απαιτείται εγγραφή στην υπηρεσία.
+### Check Activity Status
 
-[https://businessregistry.gr/](https://businessregistry.gr/)
+```php
+// Returns true if the business is active
+// Returns false if the business has been discontinued
+$entity->isActive();
+```
 
-> [!CAUTION]
-> This is an initial draft, and the API may change in the future.
+If the VAT number is not valid, a `null` value is returned. If there was another issue, the `VatException` will contain the relevant error message.
+
+## Through the Business Registry Service (ΓΕ.ΜΗ.)
+
+This service allows searching all VAT numbers registered in the General Commercial Registry (ΓΕ.ΜΗ.).
+The Business Portal API requires an API key. You can request an API key by registering at [https://opendata.businessportal.gr/register/](https://opendata.businessportal.gr/register/) and following the instructions to obtain an API key for the Open Data API.
+
+- Official Swagger documentation: [https://opendata-api.businessportal.gr/opendata/docs/](https://opendata-api.businessportal.gr/opendata/docs/)
+- Technical details about the API: [https://opendata.businessportal.gr/techdocs/](https://opendata.businessportal.gr/techdocs/)
+
+Before processing the request to the Business Portal API, this package will first check if the provided VAT number is valid, according to the Greek VAT number format. In case the VAT number is invalid, an `InvalidTinException` will be thrown.
 
 ```php
 
-use Firebed\VatRegistry\BusinessPortal;
+use Firebed\VatRegistry\BusinessPortal\BusinessPortal;
 
-$portal = new BusinessPortal();
-$response = $portal->handle('094014201');
+$portal = new BusinessPortal('your-api-key');
+
+// Search by company TIN
+$response = $portal->searchCompany('094014201');
+
+// Search by company registration number (ΓΕ.Ε.Μ.)
+$response = $portal->showCompany('1234567890');
 
 var_dump($response);
 ```
 
-## Μέσω της Υπηρεσίας Vat Information Exchange System (VIES)
 
-Με τη χρήση της Υπηρεσία VIES μπορείτε να επαληθεύσετε την εγκυρότητα του ΑΦΜ,
-που χορηγείται απο οποιοδήποτε κράτος μέλος της Ευρωπαϊκής Ένωσης. Οι λεπτομέρειες
-που παρέχει είναι πιο περιορισμένες σε σχέση με την υπηρεσία της ΑΑΔΕ.
+## Through the VAT Information Exchange System (VIES) Service
 
-Η Υπηρεσία παρέχεται δωρεάν χωρίς εγγραφή σε κάποιο φορέα. Δέχεται 2 παραμέτρους:
-- Τον κωδικό της χώρας (π.χ. EL για Ελλάδα)
-- Τον ΑΦΜ που θέλετε να επαληθεύσετε.
+Using the VIES Service, you can verify the validity of a VAT number issued by any member state of the European Union. The details it provides are more limited compared to the AADE service.
+
+The service is provided free of charge without registration with any entity. It accepts 2 parameters:
+- The country code (e.g., EL for Greece)
+- The VAT number you want to verify.
 
 ```php
 use Firebed\VatRegistry\VIES;
@@ -138,7 +149,7 @@ try {
 }
 ```
 
-Το αποτέλεσμα της παραπάνω κλήσης:
+The result of the above call:
 
 ```php
 Firebed\VatRegistry\VatEntity {
@@ -163,21 +174,4 @@ Firebed\VatRegistry\VatEntity {
 }
 ```
 
-Σε περίπτωση που το ΑΦΜ δεν είναι έγκυρο, η υπηρεσία επιστρέφει `null`.
-
-## Helper methods
-
-### Έλεγχος Φυσικού Προσώπου / Εταιρείας
-
-```php
-$entity->isNaturalPerson();
-$entity->isCompany();
-```
-
-### Έλεγχος διατήρησης δραστηριότητας
-
-```php
-// Επιστρέφει true αν η επιχείρηση είναι ενεργή
-// Επιστρέφει false αν η επιχείρηση έχει διακοπεί
-$entity->isActive();
-```
+If the VAT number is not valid, the service returns `null`.
