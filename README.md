@@ -120,7 +120,7 @@ $portal = new BusinessPortal('your-api-key');
 $response = $portal->searchCompany('094014201');
 
 // Search by company registration number (ΓΕ.Ε.Μ.)
-$response = $portal->showCompany('1234567890');
+$response = $portal->showCompany('000237954001');
 
 var_dump($response);
 ```
