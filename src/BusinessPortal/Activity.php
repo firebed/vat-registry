@@ -2,11 +2,20 @@
 
 namespace Firebed\VatRegistry\BusinessPortal;
 
-class Activity extends Enum
+class Activity
 {
     public function __construct(protected array $properties)
     {
-        parent::__construct($this->properties['activity'] ?? []);
+    }
+
+    public function getId(): ?int
+    {
+        return $this->properties['activity']['id'] ?? null;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->properties['activity']['descr'] ?? null;
     }
 
     public function getDateFrom(): ?string
