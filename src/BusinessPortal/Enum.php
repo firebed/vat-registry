@@ -4,7 +4,7 @@ namespace Firebed\VatRegistry\BusinessPortal;
 
 class Enum
 {
-    public function __construct(private array $properties)
+    public function __construct(protected array $properties)
     {
     }
 

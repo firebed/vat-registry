@@ -4,11 +4,6 @@ namespace Firebed\VatRegistry\BusinessPortal;
 
 class Activity extends Enum
 {
-    public function __construct(private array $properties)
-    {
-        parent::__construct($properties);
-    }
-
     public function getDateFrom(): ?string
     {
         return $this->properties['dtFrom'] ?? null;
