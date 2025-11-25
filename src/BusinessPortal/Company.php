@@ -68,7 +68,7 @@ class Company
         return filter_var($this->properties['isBranch'] ?? false, FILTER_VALIDATE_BOOLEAN);
     }
 
-    public function getObjective(): ?string
+    public function getProfession(): ?string
     {
         return $this->properties['objective'] ?? null;
     }
@@ -81,11 +81,6 @@ class Company
     public function isAutoRegistered(): bool
     {
         return filter_var($this->properties['autoRegistered'] ?? false, FILTER_VALIDATE_BOOLEAN);
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->properties['poBox'] ?? null;
     }
 
     public function getCompanyNameEl(): ?string
