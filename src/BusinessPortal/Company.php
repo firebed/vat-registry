@@ -132,12 +132,12 @@ class Company
         return $activities;
     }
 
-    public function getCompanyTitlesEl(): array
+    public function getCommerceTitlesEl(): array
     {
         return $this->data['coTitlesEl'] ?? [];
     }
 
-    public function getCompanyTitlesEn(): array
+    public function getCommerceTitlesEn(): array
     {
         return $this->data['coTitlesEn'] ?? [];
     }
