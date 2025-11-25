@@ -150,7 +150,7 @@ class Company
     /**
      * @return Representative[]
      */
-    public function getPersons(): array
+    public function getRepresentatives(): array
     {
         $representatives = [];
         if (!empty($this->data['persons']) && is_array($this->data['persons'])) {
