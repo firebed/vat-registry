@@ -133,7 +133,7 @@ class BusinessPortal
 
     /**
      * This method sets up SSL options for the cURL handle.
-     * All credits and blames go to claudi.ai.
+     * All credits and blames go to claude.ai.
      *
      * @param CurlHandle|bool $ch
      * @return void
@@ -152,6 +152,31 @@ class BusinessPortal
         }
 
         $caInfo = ini_get('curl.cainfo');
-        curl_setopt($ch, CURLOPT_CAINFO, $caInfo);
+        if (! empty($caInfo) && file_exists($caInfo)) {
+            curl_setopt($ch, CURLOPT_CAINFO, $caInfo);
+            return;
+        }
+
+        $opensslCaFile = ini_get('openssl.cafile');
+        if (! empty($opensslCaFile) && file_exists($opensslCaFile)) {
+            curl_setopt($ch, CURLOPT_CAINFO, $opensslCaFile);
+            return;
+        }
+
+        $caBundlePaths = [
+            '/etc/ssl/certs/ca-certificates.crt',     // Debian/Ubuntu
+            '/etc/pki/tls/certs/ca-bundle.crt',       // RedHat/CentOS
+            '/etc/ssl/ca-bundle.pem',                 // OpenSUSE
+            '/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem', // CentOS 7+
+            '/etc/ssl/cert.pem',                      // Alpine/macOS
+            '/usr/local/etc/openssl/cert.pem',        // macOS Homebrew
+        ];
+
+        foreach ($caBundlePaths as $path) {
+            if (file_exists($path)) {
+                curl_setopt($ch, CURLOPT_CAINFO, $path);
+                return;
+            }
+        }
     }
 }
