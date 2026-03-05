@@ -27,7 +27,7 @@ class TaxisNet
     /**
      * @throws VatException
      */
-    public function handle(string $vatToSearch, string $vatCalledBy = null): ?VatEntity
+    public function handle(string $vatToSearch, ?string $vatCalledBy = null): ?VatEntity
     {
         if ($this->blank($vatToSearch)) {
             throw new VatException("Please provide a VAT number");
@@ -45,7 +45,7 @@ class TaxisNet
      * @throws VatException|SoapFault
      * @noinspection PhpUndefinedMethodInspection
      */
-    protected function request(string $vatToSearch, string $vatCalledBy = null)
+    protected function request(string $vatToSearch, ?string $vatCalledBy = null)
     {
         $client = $this->createSoapClient();
         $response = $client->rgWsPublic2AfmMethod([
