@@ -11,17 +11,26 @@ use Throwable;
 class TaxisNet
 {
     use Helpers;
-    
+    use SoapTimeout;
+
     private const WSDL = 'https://www1.gsis.gr/wsaade/RgWsPublic2/RgWsPublic2?WSDL';
     private const XSD  = 'https://www1.gsis.gr/wsaade/RgWsPublic2/RgWsPublic2?xsd=1';
 
     private string $username;
     private string $password;
+    private array $soapOptions;
+    private ?int $responseTimeout;
 
-    public function __construct(string $username, string $password)
+    /**
+     * @param  array  $soapOptions  SoapClient options, merged over the defaults (e.g. connection_timeout, cache_wsdl)
+     * @param  int|null  $responseTimeout  Seconds to wait for the WSDL and the response, null for default_socket_timeout
+     */
+    public function __construct(string $username, string $password, array $soapOptions = [], ?int $responseTimeout = null)
     {
         $this->username = $username;
         $this->password = $password;
+        $this->soapOptions = $soapOptions;
+        $this->responseTimeout = $responseTimeout;
     }
 
     /**
@@ -34,10 +43,10 @@ class TaxisNet
         }
 
         try {
-            $response = $this->request($vatToSearch, $vatCalledBy);
+            $response = $this->withResponseTimeout(fn() => $this->request($vatToSearch, $vatCalledBy));
             return $this->handleResponse($response);
         } catch (Throwable $e) {
-            throw new VatException($e->getMessage());
+            throw new VatException($e->getMessage(), 0, $e);
         }
     }
 
@@ -68,10 +77,15 @@ class TaxisNet
     {
         $headers = $this->prepareHeaders($this->username, $this->password);
 
-        $client = new SoapClient(self::WSDL, ['soap_version' => SOAP_1_2]);
+        $client = new SoapClient(self::WSDL, $this->getSoapOptions());
         $client->__setSoapHeaders($headers);
 
         return $client;
+    }
+
+    protected function getSoapOptions(): array
+    {
+        return array_merge(['soap_version' => SOAP_1_2], $this->soapOptions);
     }
 
     protected function prepareHeaders(string $username, string $password): SoapHeader
