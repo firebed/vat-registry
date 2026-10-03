@@ -8,8 +8,22 @@ use Throwable;
 class VIES
 {
     use Helpers;
+    use SoapTimeout;
 
     private const ENDPOINT = "https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl";
+
+    private array $soapOptions;
+    private ?int $responseTimeout;
+
+    /**
+     * @param  array  $soapOptions  SoapClient options, merged over the defaults (e.g. connection_timeout, cache_wsdl)
+     * @param  int|null  $responseTimeout  Seconds to wait for the WSDL and the response, null for default_socket_timeout
+     */
+    public function __construct(array $soapOptions = [], ?int $responseTimeout = null)
+    {
+        $this->soapOptions = $soapOptions;
+        $this->responseTimeout = $responseTimeout;
+    }
 
     /**
      * @throws VatException
@@ -17,10 +31,10 @@ class VIES
     public function handle(string $countryCode, string $vatNumber): ?VatEntity
     {
         try {
-            $response = $this->request($countryCode, $vatNumber);
+            $response = $this->withResponseTimeout(fn() => $this->request($countryCode, $vatNumber));
             return $this->handleResponse($response);
         } catch (Throwable $e) {
-            throw new VatException($e->getMessage());
+            throw new VatException($e->getMessage(), 0, $e);
         }
     }
 
@@ -42,7 +56,12 @@ class VIES
 
     protected function createSoapClient(): SoapClient
     {
-        return new SoapClient(self::ENDPOINT);
+        return new SoapClient(self::ENDPOINT, $this->getSoapOptions());
+    }
+
+    protected function getSoapOptions(): array
+    {
+        return $this->soapOptions;
     }
 
     protected function handleResponse($response): ?VatEntity

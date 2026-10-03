@@ -175,3 +175,35 @@ Firebed\VatRegistry\VatEntity {
 ```
 
 If the VAT number is not valid, the service returns `null`.
+
+## Timeouts
+
+`TaxisNet` and `VIES` accept two optional constructor arguments:
+
+- `soapOptions`: [SoapClient options](https://www.php.net/manual/en/soapclient.construct.php) merged over the package defaults, e.g. `connection_timeout` (seconds to establish the connection) or `cache_wsdl`.
+- `responseTimeout`: seconds to wait for the WSDL and the response. Without it, a service that accepts the connection but never answers blocks for PHP's `default_socket_timeout` (60 seconds by default). ext/soap has no per-request read timeout, so `default_socket_timeout` is set to this value for the duration of the call and then restored.
+
+```php
+use Firebed\VatRegistry\TaxisNet;
+use Firebed\VatRegistry\VatException;
+use Firebed\VatRegistry\VIES;
+
+$taxis = new TaxisNet($username, $password, [
+    'connection_timeout' => 5,
+    'cache_wsdl'         => WSDL_CACHE_BOTH,
+], 10);
+
+$vies = new VIES(['connection_timeout' => 5], 10);
+
+try {
+    $entity = $taxis->handle('094014201');
+} catch (VatException $exception) {
+    $previous = $exception->getPrevious();
+
+    if ($previous instanceof SoapFault && in_array($previous->faultcode, ['HTTP', 'WSDL'])) {
+        // The service could not be reached or did not answer in time
+    }
+}
+```
+
+The original exception is available through `getPrevious()`, so a transport failure (`SoapFault` with faultcode `HTTP` or `WSDL`) can be told apart from an error returned by the service.
