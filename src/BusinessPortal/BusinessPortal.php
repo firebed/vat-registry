@@ -4,6 +4,7 @@ namespace Firebed\VatRegistry\BusinessPortal;
 
 use CurlHandle;
 use Firebed\VatRegistry\Helpers;
+use InvalidArgumentException;
 
 class BusinessPortal
 {
@@ -13,8 +14,23 @@ class BusinessPortal
 
     private ?int $lastHttpCode = null;
 
-    public function __construct(protected string $apiKey, protected bool $verifyPeer = true)
-    {
+    /**
+     * @param  int|null  $connectTimeout  Seconds to establish the connection, null for no limit
+     * @param  int|null  $timeout  Seconds for the whole request (connect + response), null for no limit
+     */
+    public function __construct(
+        protected string $apiKey,
+        protected bool $verifyPeer = true,
+        protected ?int $connectTimeout = null,
+        protected ?int $timeout = null,
+    ) {
+        if ($connectTimeout !== null && $connectTimeout <= 0) {
+            throw new InvalidArgumentException('The connect timeout must be greater than 0.');
+        }
+
+        if ($timeout !== null && $timeout <= 0) {
+            throw new InvalidArgumentException('The timeout must be greater than 0.');
+        }
     }
 
     /**
@@ -72,7 +88,7 @@ class BusinessPortal
     {
         $ch = curl_init();
 
-        $fullUrl = self::BASE_URL . $url;
+        $fullUrl = $this->baseUrl() . $url;
         if (! empty($query)) {
             $fullUrl .= '?' . http_build_query($query);
         }
@@ -80,6 +96,7 @@ class BusinessPortal
         curl_setopt($ch, CURLOPT_URL, $fullUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt_array($ch, $this->timeoutOptions());
 
         $this->setupCurlSslOptions($ch);
 
@@ -111,6 +128,36 @@ class BusinessPortal
         }
 
         return $decoded ?? [];
+    }
+
+    protected function baseUrl(): string
+    {
+        return self::BASE_URL;
+    }
+
+    /**
+     * cURL sets no limit on the transfer and ignores default_socket_timeout, so
+     * without these a server that accepts the connection and never answers
+     * blocks the request indefinitely.
+     */
+    protected function timeoutOptions(): array
+    {
+        $options = [];
+
+        if ($this->connectTimeout !== null) {
+            $options[CURLOPT_CONNECTTIMEOUT] = $this->connectTimeout;
+        }
+
+        if ($this->timeout !== null) {
+            $options[CURLOPT_TIMEOUT] = $this->timeout;
+        }
+
+        if (! empty($options)) {
+            // Without it, cURL uses signals to time out DNS lookups, which is not safe in multi-threaded SAPIs
+            $options[CURLOPT_NOSIGNAL] = 1;
+        }
+
+        return $options;
     }
 
     /**
