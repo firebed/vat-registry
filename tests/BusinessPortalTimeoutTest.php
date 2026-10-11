@@ -10,32 +10,29 @@ use PHPUnit\Framework\TestCase;
 
 class BusinessPortalTimeoutTest extends TestCase
 {
-    public function test_timeouts_are_not_set_by_default()
+    public static function timeoutOptions(): array
     {
-        $portal = new class('api-key') extends BusinessPortal {
-            public function options(): array
-            {
-                return $this->timeoutOptions();
-            }
-        };
-
-        $this->assertSame([], $portal->options());
+        return [
+            'not set by default' => [null, null, []],
+            'set'                => [5, 10, [
+                CURLOPT_CONNECTTIMEOUT => 5,
+                CURLOPT_TIMEOUT        => 10,
+                CURLOPT_NOSIGNAL       => 1,
+            ]],
+        ];
     }
 
-    public function test_timeout_options_are_set()
+    #[DataProvider('timeoutOptions')]
+    public function test_timeout_options(?int $connectTimeout, ?int $timeout, array $expected)
     {
-        $portal = new class('api-key', true, 5, 10) extends BusinessPortal {
+        $portal = new class('api-key', connectTimeout: $connectTimeout, timeout: $timeout) extends BusinessPortal {
             public function options(): array
             {
                 return $this->timeoutOptions();
             }
         };
 
-        $this->assertSame([
-            CURLOPT_CONNECTTIMEOUT => 5,
-            CURLOPT_TIMEOUT        => 10,
-            CURLOPT_NOSIGNAL       => 1,
-        ], $portal->options());
+        $this->assertSame($expected, $portal->options());
     }
 
     public static function invalidTimeouts(): array
@@ -53,7 +50,7 @@ class BusinessPortalTimeoutTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new BusinessPortal('api-key', true, $connectTimeout, $timeout);
+        new BusinessPortal('api-key', connectTimeout: $connectTimeout, timeout: $timeout);
     }
 
     public function test_request_times_out_when_server_does_not_respond()
@@ -63,7 +60,7 @@ class BusinessPortalTimeoutTest extends TestCase
         $server = stream_socket_server('tcp://127.0.0.1:0');
         $address = stream_socket_get_name($server, false);
 
-        $portal = new class('api-key', true, null, 1) extends BusinessPortal {
+        $portal = new class('api-key', timeout: 1) extends BusinessPortal {
             public string $url;
 
             protected function baseUrl(): string

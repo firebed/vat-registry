@@ -106,12 +106,10 @@ class BusinessPortal
         ]);
 
         $result = curl_exec($ch);
-        $err = null;
-        if (curl_errno($ch)) {
-            $err = curl_error($ch);
-            $code = curl_errno($ch);
+        if ($code = curl_errno($ch)) {
+            $message = curl_error($ch);
             curl_close($ch);
-            throw new BusinessPortalException($err, $code);
+            throw new BusinessPortalException($message, $code);
         }
 
         $this->lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -119,7 +117,7 @@ class BusinessPortal
         curl_close($ch);
 
         if ($this->lastHttpCode < 200 || $this->lastHttpCode >= 300) {
-            throw new BusinessPortalException($err ?: 'HTTP error: ' . $this->lastHttpCode, $this->lastHttpCode);
+            throw new BusinessPortalException('HTTP error: ' . $this->lastHttpCode, $this->lastHttpCode);
         }
 
         $decoded = json_decode($result, true);
@@ -142,15 +140,11 @@ class BusinessPortal
      */
     protected function timeoutOptions(): array
     {
-        $options = [];
-
-        if ($this->connectTimeout !== null) {
-            $options[CURLOPT_CONNECTTIMEOUT] = $this->connectTimeout;
-        }
-
-        if ($this->timeout !== null) {
-            $options[CURLOPT_TIMEOUT] = $this->timeout;
-        }
+        // The constructor rejects values <= 0, so array_filter only drops the null ones
+        $options = array_filter([
+            CURLOPT_CONNECTTIMEOUT => $this->connectTimeout,
+            CURLOPT_TIMEOUT        => $this->timeout,
+        ]);
 
         if (! empty($options)) {
             // Without it, cURL uses signals to time out DNS lookups, which is not safe in multi-threaded SAPIs
