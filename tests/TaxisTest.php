@@ -34,17 +34,21 @@ class TaxisTest extends TestCase
         $this->assertSame(false, $entity->isNaturalPerson());
         $this->assertSame(true, $entity->isActive());
 
-        $this->assertCount(2, $entity->firms);
+        // Secondary activities change over time in the live registry, so only the primary one is pinned
+        foreach ($entity->firms as $firm) {
+            $this->assertSame(['code', 'description', 'kind', 'kindDescription'], array_keys($firm));
+            $this->assertNotContains('', $firm);
+        }
 
-        $this->assertSame("64191204", $entity->firms[0]['code']);
-        $this->assertSame("ΥΠΗΡΕΣΙΕΣ ΤΡΑΠΕΖΩΝ", $entity->firms[0]['description']);
-        $this->assertSame("1", $entity->firms[0]['kind']);
-        $this->assertSame("ΚΥΡΙΑ", $entity->firms[0]['kindDescription']);
+        $primary = array_values(array_filter($entity->firms, fn (array $firm) => $firm['kind'] === '1'));
+        $this->assertSame([[
+            'code'            => '64191204',
+            'description'     => 'ΥΠΗΡΕΣΙΕΣ ΤΡΑΠΕΖΩΝ',
+            'kind'            => '1',
+            'kindDescription' => 'ΚΥΡΙΑ',
+        ]], $primary);
 
-        $this->assertSame("66221001", $entity->firms[1]['code']);
-        $this->assertSame("ΥΠΗΡΕΣΙΕΣ ΑΣΦΑΛΙΣΤΙΚΟΥ ΠΡΑΚΤΟΡΑ ΚΑΙ ΑΣΦΑΛΙΣΤΙΚΟΥ ΣΥΜΒΟΥΛΟΥ", $entity->firms[1]['description']);
-        $this->assertSame("2", $entity->firms[1]['kind']);
-        $this->assertSame("ΔΕΥΤΕΡΕΥΟΥΣΑ", $entity->firms[1]['kindDescription']);
+        $this->assertContains('ΔΕΥΤΕΡΕΥΟΥΣΑ', array_column($entity->firms, 'kindDescription'));
     }
 
     public function test_invalid_vat_number()
