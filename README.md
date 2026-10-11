@@ -207,3 +207,25 @@ try {
 ```
 
 The original exception is available through `getPrevious()`, so a transport failure (`SoapFault` with faultcode `HTTP` or `WSDL`) can be told apart from an error returned by the service.
+
+`BusinessPortal` (ΓΕ.ΜΗ.) uses cURL, which has no time limit by default and ignores `default_socket_timeout`, so a service that accepts the connection but never answers blocks the request indefinitely. It accepts two optional constructor arguments:
+
+- `connectTimeout`: seconds to establish the connection.
+- `timeout`: seconds for the whole request (connection and response).
+
+```php
+use Firebed\VatRegistry\BusinessPortal\BusinessPortal;
+use Firebed\VatRegistry\BusinessPortal\BusinessPortalException;
+
+$portal = new BusinessPortal($apiKey, connectTimeout: 5, timeout: 10);
+
+try {
+    $company = $portal->searchCompany('094014201');
+} catch (BusinessPortalException $exception) {
+    if ($exception->getCode() > 0 && $exception->getCode() < 100) {
+        // The service could not be reached or did not answer in time
+    }
+}
+```
+
+The exception code tells the two cases apart. When the service did not answer, the code is the cURL error number: `28` (`CURLE_OPERATION_TIMEDOUT`) for a timeout, `6` (`CURLE_COULDNT_RESOLVE_HOST`) or `7` (`CURLE_COULDNT_CONNECT`) when the connection failed. When the service answered with an error, the code is the HTTP status (`>= 100`). A response that is not valid JSON has code `0`.
